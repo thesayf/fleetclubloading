@@ -251,3 +251,15 @@
         margin-top: 10px;
         margin-bottom: 10px;
     }
+
+.growl {
+  opacity: 1 !important;
+}
+
+#job-date-picker {
+  cursor: pointer;
+}
+
+.ui-timepicker-input {
+  cursor: pointer;
+}

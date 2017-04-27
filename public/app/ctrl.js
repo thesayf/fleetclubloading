@@ -132,10 +132,16 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
         $scope.dashInstant.extraDropCount = 0;
         $scope.dashInstant.delChange = 0;
         //$scope.dashInstant.extraDrop = 0;
-        $scope.dashInstant.loadTime = {};
-        $scope.dashInstant.unloadTime = {};
-        $scope.dashInstant.loadTime.qty = 10;
-        $scope.dashInstant.unloadTime.qty = 10;
+        $scope.dashInstant.loadTime = [];
+        //$scope.dashInstant.unloadTime = {};
+        //$scope.dashInstant.loadTime.qty = 5;
+      //  $scope.dashInstant.unloadTime.qty = 5;
+        /*$scope.dashInstant.loadTimeQty = 10;
+        $scope.dashInstant.loadTime.push(5);
+        $scope.dashInstant.loadTime.push(5);*/
+        $scope.dashInstant.loadTimeObj = {};
+        $scope.dashInstant.loadTimeObj[0] = $scope.loadOptions[0];
+        $scope.dashInstant.loadTimeObj[1] = $scope.loadOptions[0];
     }
 
 
@@ -143,6 +149,8 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
     $scope.addDrop = function() {
         $scope.dashInstant.extraDropCount++;
         $scope.dashInstant.extraDropArr.push($scope.dashInstant.extraDropCount);
+        //$scope.dashInstant.loadTime[$scope.dashInstant.extraDropCount-1].qty = 5;
+        $scope.dashInstant.loadTimeObj[$scope.dashInstant.extraDropCount+1] = $scope.loadOptions[0];
         if($scope.dashInstant.extraDropCount > 0) {
           $scope.optimize = true;
         } else {
@@ -159,6 +167,7 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
         $scope.dashInstant.extraDropCount--;
         $scope.dashInstant.extraDropArr.splice(no, 1);
         $scope.dashInstant.extraDropObj.splice(no, 1);
+        delete $scope.dashInstant.loadTimeObj[no+1];
         if($scope.dashInstant.extraDropCount > 0) {
           $scope.optimize = true;
         } else {
@@ -285,6 +294,14 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
               var nowDate = '0'+day+'-'+month+'-'+year;
             }
         }
+
+
+
+        var countLoad = 0;
+        for(loadTemp in $scope.dashInstant.loadTimeObj) {
+          countLoad = countLoad + $scope.dashInstant.loadTimeObj[loadTemp].qty;
+        }
+        $scope.dashInstant.loadTimeQty = countLoad;
 
         $scope.dropOffLen = Object.keys($scope.dashInstant.extraDropObj).length;
 
@@ -438,6 +455,8 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
                       if(dropObj[i].postcode.formatted_address.length < 1) {
                         flag = flag + 1;
                         canProgress = canProgress + 1;
+                      } else {
+                        $scope.loadBtnToggle = true;
                       }
                     }
                     if(dropObj[i].doorNumber == undefined || dropObj[i].doorNumber.length < 1) {
@@ -602,38 +621,38 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
             }*/
 
             if($scope.dashInstant.vanType == undefined || $scope.dashInstant.vanType == '') {
-                $.growl.error({ message: 'Choose a van!' });
+                $.growl.warning({ message: 'Choose a van!' });
             }
 
             if($scope.dashInstant.jobStartTimeHour == undefined || $scope.dashInstant.jobStartTimeMin  == undefined) {
-              $.growl.error({ message: 'Choose a start time!' });
+              $.growl.warning({ message: 'Choose a start time!' });
             }
 
 
             // IF NO ADDRESS DATA
             if($scope.dashInstant.address == undefined) {
-                $.growl.error({message: 'Fill in the Start & End Location!'});
+                $.growl.warning({message: 'Fill in the Start & End Location!'});
             } else {
                 var add = $scope.dashInstant.address;
                 var dropObj = $scope.dashInstant.extraDropObj;
                 if(add.start_location !== undefined) {
                     if(add.start_location.name !== undefined) {
                         if(add.start_location.name.length < 3) {
-                            $.growl.error({ message: 'Fill in the Start Location!' });
+                            $.growl.warning({ message: 'Fill in the Start Location!' });
                         }
 
                     } else {
-                        $.growl.error({ message: 'Fill in the Start Location!' });
+                        $.growl.warning({ message: 'Fill in the Start Location!' });
                     }
                     if(add.start_location.number !== undefined) {
                         if(add.start_location.number.length < 1) {
-                            $.growl.error({ message: 'Fill in the Start Location House Number!' });
+                            $.growl.warning({ message: 'Fill in the Start Location House Number!' });
                         }
                     } else {
-                        $.growl.error({ message: 'Fill in the Start Location House Number!' });
+                        $.growl.warning({ message: 'Fill in the Start Location House Number!' });
                     }
                 } else {
-                    $.growl.error({ message: 'Fill in the Start Location!' });
+                    $.growl.warning({ message: 'Fill in the Start Location!' });
                 }
 
                 // LOOP DROP POINTS
@@ -641,33 +660,33 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
                     if(Object.keys(dropObj).length > 0) {
                       for(i in dropObj) {
                         if(dropObj[i].postcode.formatted_address == undefined || dropObj[i].postcode.formatted_address.length < 1) {
-                          $.growl.error({ message: 'Fill in all your drop off postcodes' });
+                          $.growl.warning({ message: 'Fill in all your drop off postcodes' });
                         }
                         if(dropObj[i].doorNumber == undefined || dropObj[i].doorNumber.length < 1) {
-                          $.growl.error({ message: 'Fill in all your drop off door numbers' });
+                          $.growl.warning({ message: 'Fill in all your drop off door numbers' });
                         }
                       }
                     }
                 } else {
-                    $.growl.error({ message: 'Fill in the Drop Off Locations!' });
+                    $.growl.warning({ message: 'Fill in the Drop Off Locations!' });
                 }
 
                 if(add.start_location.name.formatted_address == undefined) {
                   //console.log(add);
-                  $.growl.error({ message: 'Use the location suggestion drop down box to pick your address' });
+                  $.growl.warning({ message: 'Use the location suggestion drop down box to pick your address' });
                 }
                 if(add.start_location.name.formatted_address == undefined) {
-                  $.growl.error({ message: 'Use the location suggestion drop down box to pick your address' });
+                  $.growl.warning({ message: 'Use the location suggestion drop down box to pick your address' });
                 }
             }
 
 
             // IF NO JOB DATE
             if($scope.dashInstant.jobDate == undefined || $scope.dashInstant.jobDate == '') {
-                $.growl.error({ message: 'Fill in the Job Date!' });
+                $.growl.warning({ message: 'Fill in the Job Date!' });
             }
             if($scope.dashInstant.jobStartTime == undefined || $scope.dashInstant.jobStartTime == '') {
-                $.growl.error({ message: 'Fill in the Start Time!' });
+                $.growl.warning({ message: 'Fill in the Start Time!' });
             } else {
                 var realTime = new Date();
                 var h = realTime.getHours();
@@ -693,7 +712,7 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
                     var d1 = Date.parse(utcNowDate);
                     var d2 = Date.parse(utcJobDate);
                     if (d1 < d2) {
-                        $.growl.error({ message: 'The Start Time has already passed!' });
+                        $.growl.warning({ message: 'The Start Time has already passed!' });
                     } else {
                         // Cool
                     }
@@ -727,17 +746,11 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
         }
     }
 
-    /*$scope.loadTimeCalc = function(min) {
-      $scope.dashInstant.loadTime = parseInt(min);
-    }
 
-    $scope.unloadTimeCalc = function(min) {
-      $scope.dashInstant.unloadTime = parseInt(min);
-    }*/
 
     $scope.calcAlgo = function() {
-        $scope.loadTime = 0;
-        $scope.unloadTime = 0;
+        //$scope.loadTime = 0;
+        //$scope.unloadTime = 0;
         $scope.totalCuft = 0;
         /*for(ti in $scope.dashInstant.itemBoxes) {
             var itemType = $scope.dashInstant.itemBoxes[ti].size;
@@ -748,11 +761,11 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
             $scope.totalCuft = $scope.totalCuft + (itemCuft * itemQty);
         }*/
 
-        $scope.loadTime = $scope.dashInstant.loadTime.qty;
-        $scope.unloadTime = $scope.dashInstant.unloadTime.qty;
+        //$scope.loadTime = $scope.dashInstant.loadTime.qty;
+        //$scope.unloadTime = $scope.dashInstant.unloadTime.qty;
 
-        if($scope.loadTime == 10) {$scope.loadTime = 0;}
-        if($scope.unloadTime == 10) {$scope.unloadTime = 0;}
+        //if($scope.loadTime == 10) {$scope.loadTime = 0;}
+        //if($scope.unloadTime == 10) {$scope.unloadTime = 0;}
 
         //dashInstant.itemBoxes = $scope.itemBoxes;
 
@@ -783,6 +796,13 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
         var fuelCost = parseInt(milesTravel) * 1.80;
         //var fuelCost = 0;
 
+        var defaultLoadFee = 0;
+        for(k in $scope.loadTimeObj) {
+          if($scope.loadTimeObj[k].qty == 5) {
+            defaultLoadFee = defaultLoadFee + 2;
+          }
+        }
+
         var totalTime = $scope.loadTime + $scope.unloadTime + driveTime;
         if(totalTime < 90) {
           totalTime = (90 + $scope.loadTime) + $scope.unloadTime;
@@ -798,7 +818,9 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
                 rate = 4.4;
             }
         }
-        var workCost = milesTravel * rate;
+        var workCost = (milesTravel * rate) +
+                        ( parseInt($scope.dashInstant.loadTimeQty) * rate ) +
+                        defaultLoadFee;
 
         $scope.totalCost = Math.ceil((workCost/* + fuelCost/* + extra*/) * 10) / 10;
         if(van == 'SWB Van' && $scope.totalCost < 19) {$scope.totalCost = '19';}
@@ -1056,7 +1078,7 @@ app.controller('CheckoutCtrl', function($scope, $location, $localStorage, $http,
 
     $scope.vali = function(name, length, msg, cb) {
         if(name == '' || name == undefined || name.length < 3) {
-            $.growl.error({ message: msg });
+            $.growl.warning({ message: msg });
             cb(1);
         } else {
             cb(0);
@@ -1098,7 +1120,7 @@ app.controller('CheckoutCtrl', function($scope, $location, $localStorage, $http,
         $localStorage.vg.jobDetails = $scope.jobDeets;
         $location.path("/checkout-3")
       } else {
-        $.growl.error({ message: 'Please agree to the terms.' });
+        $.growl.warning({ message: 'Please agree to the terms.' });
       }
 
     }
@@ -1126,23 +1148,23 @@ app.controller('CheckoutCtrl', function($scope, $location, $localStorage, $http,
 
           var flag = 0;
           if($scope.ccDeets.number == undefined || $scope.ccDeets.number.replace(/ /g,'').length !== 16) {
-              $.growl.error({ message: 'Card Number Must Be 16 Digits!'});
+              $.growl.warning({ message: 'Card Number Must Be 16 Digits!'});
               flag = flag + 1;
           }
           if($scope.ccDeets.expMonth == undefined || $scope.ccDeets.expMonth.length !== 2) {
-              $.growl.error({ message: 'Card Expiration Month Must Be 2 Digits!'});
+              $.growl.warning({ message: 'Card Expiration Month Must Be 2 Digits!'});
               flag = flag + 1;
           }
           if($scope.ccDeets.expYear == undefined || $scope.ccDeets.expYear.length !== 2) {
-              $.growl.error({ message: 'Card Expiration Year Must Be 2 Digits!'});
+              $.growl.warning({ message: 'Card Expiration Year Must Be 2 Digits!'});
               flag = flag + 1;
           }
           if($scope.ccDeets.expCvc == undefined || $scope.ccDeets.expCvc.length !== 3) {
-              $.growl.error({ message: 'Card CVC Number Must Be 3 Digits!'});
+              $.growl.warning({ message: 'Card CVC Number Must Be 3 Digits!'});
               flag = flag + 1;
           }
           if($scope.ccDeets.zip == undefined || $scope.ccDeets.zip.length < 4) {
-              $.growl.error({ message: 'Please add a billing post code!'});
+              $.growl.warning({ message: 'Please add a billing post code!'});
               flag = flag + 1;
           }
 
@@ -1188,7 +1210,7 @@ app.controller('CheckoutCtrl', function($scope, $location, $localStorage, $http,
                                     ]*/
                                 });
                             } else {
-                                $.growl.error({message: 'Job Booking Failed Please Call Us!'});
+                                $.growl.warning({message: 'Job Booking Failed Please Call Us!'});
                                 $form.find('.submit').prop('disabled', false);
                                 $('.spinner').remove();
                                 //$localStorage.vg = {};
@@ -1197,7 +1219,7 @@ app.controller('CheckoutCtrl', function($scope, $location, $localStorage, $http,
                             }
                         })
                     } else {
-                        $.growl.error({message: 'Payment Failed, Try a different card!'});
+                        $.growl.warning({message: 'Payment Failed, Try a different card!'});
                         $form.find('.submit').prop('disabled', false);
                         $('.spinner').remove();
                         $location.path('/404-page');

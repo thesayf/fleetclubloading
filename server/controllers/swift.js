@@ -59,7 +59,7 @@ console.log(delItems);
       "apiKey": swiftKey,
       "booking": {
         "reference": data.van+', '+data.jobDate+',('+data.jobStartTime+'),£'+data.estiCalc+','+data.extraHelp,
-        "deliveryInstructions": 'Load Time: '+data.loadTime.qty+' mins, Unload Time: '+data.unloadTime.qty+' mins,'+dropNotice+data.instructions+', '+data.extraHelp,
+        "deliveryInstructions": 'Load Time: '+data.loadTimeQty+' mins, '+dropNotice+data.instructions+', '+data.extraHelp,
         "itemsRequirePurchase": false,
         "items": delItems,
         "pickupTime": '20'+year+'-'+month+'-'+day+'T'+data.jobStartTime.split('-')[0],

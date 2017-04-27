@@ -584,8 +584,14 @@ app.service('maps', function($timeout, $window, routeInfo) {
         directionsService.route(request1, function (response1, status1) {
             if (status1 === google.maps.DirectionsStatus.OK) {
                 //directionsDisplay.setDirections(response);
-                dashInstant.distance = response1.routes[0].legs[0].distance.value;
-                dashInstant.duration = response1.routes[0].legs[0].duration.value;
+                //dashInstant.distance = response1.routes[0].legs[0].distance.value;
+                //dashInstant.duration = response1.routes[0].legs[0].duration.value;
+                dashInstant.distance = 0;
+                dashInstant.duration = 0;
+                for(leg in response1.routes[0].legs) {
+                  dashInstant.distance = dashInstant.distance + response1.routes[0].legs[leg].distance.value;
+                  dashInstant.duration = parseInt(dashInstant.distance) + parseInt(response1.routes[0].legs[leg].duration.value);
+                }
             }
             //google.maps.event.trigger(map, 'resize');
             callback(dashInstant);

@@ -849,69 +849,75 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
       $scope.tempDropObj = [];
       if($scope.dashInstant && $scope.dashInstant.address ) {
         //console.log('$scope.optRoute: '+$scope.optRoute);
-        maps.setDirections($scope.dashInstant, $scope.optRoute, function(data, resp) {
-          var isFunc = jQuery.isFunction($scope.dashInstant.address.start_location.name.geometry.location.lat());
-          //console.log('isFunc: '+isFunc);
-          var isFunc2 = jQuery.isFunction($scope.dashInstant.address.start_location.name.geometry.location.lng());
-          //console.log('isFunc: '+isFunc2);
-          //if(isFunc) {
-            $scope.dashInstant.address.start_location.lat = $scope.dashInstant.address.start_location.name.geometry.location.lat();
-          //}
-        //  if(isFunc2) {
-            $scope.dashInstant.address.start_location.lng = $scope.dashInstant.address.start_location.name.geometry.location.lng();
-          //}
+          maps.setDirections2($scope.dashInstant, $scope.optRoute, function(data2, resp2) {
 
-          //console.log($scope.dashInstant.address.start_location);
-          $('#optSpin').addClass('hide');
-
-          if(resp !== undefined) {
-            $scope.respLen = Object.keys(resp.routes[0].legs).length-1;
-            //console.log('respLen: '+$scope.respLen);
-            for(key in resp.routes[0].legs) {
-              if($scope.respLen == key) {} else {
-                $scope.tempDropObj[key] = {postcode: resp.routes[0].legs[key].end_address, doorNumber: ''};
-              }
-            }
-
-            for(key in $scope.dashInstant.extraDropObj) {
-              for(k in $scope.tempDropObj) {
-                if($scope.dashInstant.extraDropObj[key].postcode.formatted_address == $scope.tempDropObj[k].postcode) {
-                  $scope.tempDropObj[k].doorNumber = $scope.dashInstant.extraDropObj[key].doorNumber;
-                  $scope.tempDropObj[k].postcode = $scope.dashInstant.extraDropObj[key].postcode;
-                  $scope.tempDropObj[k].lat = $scope.dashInstant.extraDropObj[key].lat;
-                  $scope.tempDropObj[k].lng = $scope.dashInstant.extraDropObj[key].lng;
-                }
-              }
-            }
-
-            for(key in $scope.dashInstant.extraDropObj) {
-              if($scope.tempDropObj[key] !== undefined) {
-                $scope.dashInstant.extraDropObj[key].doorNumber = $scope.tempDropObj[key].doorNumber;
-                $scope.dashInstant.extraDropObj[key].postcode = $scope.tempDropObj[key].postcode;
-                $scope.dashInstant.extraDropObj[key].lat = $scope.tempDropObj[key].lat;
-                $scope.dashInstant.extraDropObj[key].lng = $scope.tempDropObj[key].lng;
-              }
-
-            }
-
-            $scope.$apply();
-
-            if($scope.extraDropObj) {
-              if(Object.keys($scope.extraDropObj).length > 1) {
-                $scope.optimize = true;
-              }
-            }
-
-            var tempMiles = 0.000621371192237 * data.distance;
+            var tempMiles = 0.000621371192237 * data2.distance;
             //$scope.dashInstant.fuelPrice = Math.round(tempMiles * 0.72);
             $scope.dashInstant.distance = tempMiles;
-            $scope.dashInstant.duration = data.duration;
-            $scope.optRoute = false;
-            $scope.changeData();
-            $scope.calcAlgo();
-            $('#optSpin').addClass('hide');
-          }
-        });
+            $scope.dashInstant.duration = data2.duration;
+
+            maps.setDirections($scope.dashInstant, $scope.optRoute, function(data, resp) {
+              var isFunc = jQuery.isFunction($scope.dashInstant.address.start_location.name.geometry.location.lat());
+              //console.log('isFunc: '+isFunc);
+              var isFunc2 = jQuery.isFunction($scope.dashInstant.address.start_location.name.geometry.location.lng());
+              //console.log('isFunc: '+isFunc2);
+              //if(isFunc) {
+                $scope.dashInstant.address.start_location.lat = $scope.dashInstant.address.start_location.name.geometry.location.lat();
+              //}
+            //  if(isFunc2) {
+                $scope.dashInstant.address.start_location.lng = $scope.dashInstant.address.start_location.name.geometry.location.lng();
+              //}
+
+              //console.log($scope.dashInstant.address.start_location);
+              $('#optSpin').addClass('hide');
+
+              if(resp !== undefined) {
+                $scope.respLen = Object.keys(resp.routes[0].legs).length-1;
+                //console.log('respLen: '+$scope.respLen);
+                for(key in resp.routes[0].legs) {
+                  if($scope.respLen == key) {} else {
+                    $scope.tempDropObj[key] = {postcode: resp.routes[0].legs[key].end_address, doorNumber: ''};
+                  }
+                }
+
+                for(key in $scope.dashInstant.extraDropObj) {
+                  for(k in $scope.tempDropObj) {
+                    if($scope.dashInstant.extraDropObj[key].postcode.formatted_address == $scope.tempDropObj[k].postcode) {
+                      $scope.tempDropObj[k].doorNumber = $scope.dashInstant.extraDropObj[key].doorNumber;
+                      $scope.tempDropObj[k].postcode = $scope.dashInstant.extraDropObj[key].postcode;
+                      $scope.tempDropObj[k].lat = $scope.dashInstant.extraDropObj[key].lat;
+                      $scope.tempDropObj[k].lng = $scope.dashInstant.extraDropObj[key].lng;
+                    }
+                  }
+                }
+
+                for(key in $scope.dashInstant.extraDropObj) {
+                  if($scope.tempDropObj[key] !== undefined) {
+                    $scope.dashInstant.extraDropObj[key].doorNumber = $scope.tempDropObj[key].doorNumber;
+                    $scope.dashInstant.extraDropObj[key].postcode = $scope.tempDropObj[key].postcode;
+                    $scope.dashInstant.extraDropObj[key].lat = $scope.tempDropObj[key].lat;
+                    $scope.dashInstant.extraDropObj[key].lng = $scope.tempDropObj[key].lng;
+                  }
+
+                }
+
+                $scope.$apply();
+
+                if($scope.extraDropObj) {
+                  if(Object.keys($scope.extraDropObj).length > 1) {
+                    $scope.optimize = true;
+                  }
+                }
+
+
+                $scope.optRoute = false;
+                $scope.changeData();
+                $scope.calcAlgo();
+                $('#optSpin').addClass('hide');
+              }
+            });
+          })
+
       }
 
 

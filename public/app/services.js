@@ -493,7 +493,7 @@ app.service('maps', function($timeout, $window, routeInfo) {
         //console.log('address '+dashInstant.extraDropObj[Object.keys(dashInstant.extraDropObj).length-1].postcode.formatted_address);
 
 
-        request1 = {
+        /*request1 = {
             origin: dashInstant.address.start_location.name.formatted_address+', UK',
             destination: dashInstant.extraDropObj[Object.keys(dashInstant.extraDropObj).length-1].postcode.formatted_address+', UK',
             waypoints: waypts,
@@ -511,7 +511,7 @@ app.service('maps', function($timeout, $window, routeInfo) {
             }
             //google.maps.event.trigger(map, 'resize');
             //callback(dashInstant);
-        });
+        });*/
 
         request = {
             origin: dashInstant.address.start_location.name.formatted_address+', UK',
@@ -545,6 +545,57 @@ app.service('maps', function($timeout, $window, routeInfo) {
 
 
     }
+
+    // Render Directions
+    maps.setDirections2 = function(dashInstant, opt, callback) {
+        $('#optSpin').addClass('hide');
+        if(Object.keys(dashInstant.extraDropObj).length < 1) {
+          return false;
+        }
+
+
+        var waypts = [];
+        for (var i = 0; i < Object.keys(dashInstant.extraDropObj).length; i++) {
+            if(i == Object.keys(dashInstant.extraDropObj).length-1) {} else {
+              waypts.push({
+                location: dashInstant.extraDropObj[i].postcode.formatted_address,
+                stopover: true
+              });
+            }
+
+        }
+
+        //console.log(waypts);
+
+        //console.log('address '+dashInstant.address.start_location);
+        //console.log('address '+dashInstant.extraDropObj[Object.keys(dashInstant.extraDropObj).length-1].postcode.formatted_address);
+
+
+        request1 = {
+            origin: dashInstant.address.start_location.name.formatted_address+', UK',
+            destination: dashInstant.extraDropObj[Object.keys(dashInstant.extraDropObj).length-1].postcode.formatted_address+', UK',
+            waypoints: waypts,
+            travelMode: 'WALKING',
+            provideRouteAlternatives: false,
+            unitSystem: google.maps.UnitSystem.METRIC,
+            optimizeWaypoints: opt
+        };
+
+        directionsService.route(request1, function (response1, status1) {
+            if (status1 === google.maps.DirectionsStatus.OK) {
+                //directionsDisplay.setDirections(response);
+                dashInstant.distance = response1.routes[0].legs[0].distance.value;
+                dashInstant.duration = response1.routes[0].legs[0].duration.value;
+            }
+            //google.maps.event.trigger(map, 'resize');
+            callback(dashInstant);
+        });
+
+
+    }
+
+
+
     return maps;
 })
 

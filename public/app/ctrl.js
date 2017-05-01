@@ -799,28 +799,109 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
         var defaultLoadFee = 0;
         for(k in $scope.loadTimeObj) {
           if($scope.loadTimeObj[k].qty == 5) {
-            defaultLoadFee = defaultLoadFee + 2;
+            if(van == 'SWB Van') {
+                defaultLoadFee = defaultLoadFee + 2;
+            }
+            if(van == 'LWB Van') {
+                defaultLoadFee = defaultLoadFee + 2;
+            }
+            if(van == 'Luton Van') {
+                defaultLoadFee = defaultLoadFee + 2;
+            }
+          }
+
+          if($scope.loadTimeObj[k].qty == 30) {
+            if(van == 'SWB Van') {
+                defaultLoadFee = defaultLoadFee + 7.5;
+            }
+            if(van == 'LWB Van') {
+                defaultLoadFee = defaultLoadFee + 10;
+            }
+            if(van == 'Luton Van') {
+                defaultLoadFee = defaultLoadFee + 17.5;
+            }
+          }
+
+          if($scope.loadTimeObj[k].qty == 60) {
+            if(van == 'SWB Van') {
+                defaultLoadFee = defaultLoadFee + 15;
+            }
+            if(van == 'LWB Van') {
+                defaultLoadFee = defaultLoadFee + 20;
+            }
+            if(van == 'Luton Van') {
+                defaultLoadFee = defaultLoadFee + 35;
+            }
+          }
+
+          if($scope.loadTimeObj[k].qty == 90) {
+            if(van == 'SWB Van') {
+                defaultLoadFee = defaultLoadFee + 22.5;
+            }
+            if(van == 'LWB Van') {
+                defaultLoadFee = defaultLoadFee + 30;
+            }
+            if(van == 'Luton Van') {
+                defaultLoadFee = defaultLoadFee + 52.5;
+            }
+          }
+
+          if($scope.loadTimeObj[k].qty == 120) {
+            if(van == 'SWB Van') {
+                defaultLoadFee = defaultLoadFee + 30;
+            }
+            if(van == 'LWB Van') {
+                defaultLoadFee = defaultLoadFee + 40;
+            }
+            if(van == 'Luton Van') {
+                defaultLoadFee = defaultLoadFee + 70;
+            }
+          }
+
+          if($scope.loadTimeObj[k].qty == 150) {
+            if(van == 'SWB Van') {
+                defaultLoadFee = defaultLoadFee + 37.5;
+            }
+            if(van == 'LWB Van') {
+                defaultLoadFee = defaultLoadFee + 50;
+            }
+            if(van == 'Luton Van') {
+                defaultLoadFee = defaultLoadFee + 87.5;
+            }
+          }
+
+          if($scope.loadTimeObj[k].qty == 180) {
+            if(van == 'SWB Van') {
+                defaultLoadFee = defaultLoadFee + 45;
+            }
+            if(van == 'LWB Van') {
+                defaultLoadFee = defaultLoadFee + 60;
+            }
+            if(van == 'Luton Van') {
+                defaultLoadFee = defaultLoadFee + 105;
+            }
           }
         }
+
+
 
         var totalTime = $scope.loadTime + $scope.unloadTime + driveTime;
         if(totalTime < 90) {
           totalTime = (90 + $scope.loadTime) + $scope.unloadTime;
         }
-        if($scope.dashInstant.extraHelp == true) {
-            if(van == 'SWB Van') {
-                rate = 3.2;
-            }
-            if(van == 'LWB Van') {
-                rate = 3.6;
-            }
-            if(van == 'Luton Van') {
-                rate = 4.4;
-            }
-        }
-        var workCost = (milesTravel * rate) +
+
+        var loadQty = $scope.dashInstant.loadTimeQty;
+        //if(loadQty )
+
+        /*var workCost = (milesTravel * rate) +
                         ( parseInt($scope.dashInstant.loadTimeQty) * rate ) +
-                        defaultLoadFee;
+                        defaultLoadFee;*/
+        var workCost = (milesTravel * rate) + defaultLoadFee;
+        if($scope.dashInstant.extraHelp == true) {
+            var percentVal = workCost * 75%;
+            workCost = workCost + percentVal;
+        }
+
 
         $scope.totalCost = Math.ceil((workCost/* + fuelCost/* + extra*/) * 10) / 10;
         if(van == 'SWB Van' && $scope.totalCost < 19) {$scope.totalCost = '19';}

@@ -898,7 +898,7 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
                         defaultLoadFee;*/
         var workCost = (milesTravel * rate) + defaultLoadFee;
         if($scope.dashInstant.extraHelp == true) {
-            var percentVal = workCost * 75%;
+            var percentVal = workCost * ((75/100)*75);
             workCost = workCost + percentVal;
         }
 

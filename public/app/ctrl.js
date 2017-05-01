@@ -86,7 +86,7 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
     }
 
     $scope.loadOptions = [
-        {id: 0, qty: 10, name: '5 mins'},
+        {id: 0, qty: 5, name: '5 mins'},
         {id: 1, qty: 30, name: '30 mins'},
         {id: 2, qty: 60, name: '1 hr'},
         {id: 3, qty: 90, name: '1hr 30 mins'},
@@ -898,8 +898,9 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
                         defaultLoadFee;*/
         var workCost = (milesTravel * rate) + defaultLoadFee;
         if($scope.dashInstant.extraHelp == true) {
-            var percentVal = workCost * ((75/100)*75);
-            workCost = workCost + percentVal;
+            var percentVal = 75/100;
+            var percentTotal = workCost * percentVal;
+            workCost = workCost + percentTotal;
         }
 
 

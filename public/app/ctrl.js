@@ -797,8 +797,8 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
         //var fuelCost = 0;
 
         var defaultLoadFee = 0;
-        for(k in $scope.loadTimeObj) {
-          if($scope.loadTimeObj[k].qty == 5) {
+        for(k in $scope.dashInstant.loadTimeObj) {
+          if($scope.dashInstant.loadTimeObj[k].qty == 5) {
             if(van == 'SWB Van') {
                 defaultLoadFee = defaultLoadFee + 2;
             }
@@ -810,7 +810,7 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
             }
           }
 
-          if($scope.loadTimeObj[k].qty == 30) {
+          if($scope.dashInstant.loadTimeObj[k].qty == 30) {
             if(van == 'SWB Van') {
                 defaultLoadFee = defaultLoadFee + 7.5;
             }
@@ -822,7 +822,7 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
             }
           }
 
-          if($scope.loadTimeObj[k].qty == 60) {
+          if($scope.dashInstant.loadTimeObj[k].qty == 60) {
             if(van == 'SWB Van') {
                 defaultLoadFee = defaultLoadFee + 15;
             }
@@ -834,7 +834,7 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
             }
           }
 
-          if($scope.loadTimeObj[k].qty == 90) {
+          if($scope.dashInstant.loadTimeObj[k].qty == 90) {
             if(van == 'SWB Van') {
                 defaultLoadFee = defaultLoadFee + 22.5;
             }
@@ -846,7 +846,7 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
             }
           }
 
-          if($scope.loadTimeObj[k].qty == 120) {
+          if($scope.dashInstant.loadTimeObj[k].qty == 120) {
             if(van == 'SWB Van') {
                 defaultLoadFee = defaultLoadFee + 30;
             }
@@ -858,7 +858,7 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
             }
           }
 
-          if($scope.loadTimeObj[k].qty == 150) {
+          if($scope.dashInstant.loadTimeObj[k].qty == 150) {
             if(van == 'SWB Van') {
                 defaultLoadFee = defaultLoadFee + 37.5;
             }
@@ -870,7 +870,7 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
             }
           }
 
-          if($scope.loadTimeObj[k].qty == 180) {
+          if($scope.dashInstant.loadTimeObj[k].qty == 180) {
             if(van == 'SWB Van') {
                 defaultLoadFee = defaultLoadFee + 45;
             }
@@ -882,6 +882,8 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
             }
           }
         }
+
+        console.log('defaultLoadFee: '+defaultLoadFee);
 
 
 

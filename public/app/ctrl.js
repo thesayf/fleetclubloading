@@ -403,7 +403,11 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
             //console.log($scope.totalQty);
 
         //console.log($scope.totalQty);
-
+        // if no load time
+        if($scope.loadBtnValid !== true) {
+          flag = flag + 1;
+          canProgress = canProgress + 1;
+        }
 
         /*$scope.totalQty = ($scope.dashInstant.itemBoxes[0].qty + scope.dashInstant.itemBoxes[1].qty) + $scope.dashInstant.itemBoxes[2].qty;*/
 
@@ -718,6 +722,11 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
                     }
 
                 }
+            }
+
+            // if no load time
+            if($scope.loadBtnValid !== true) {
+              $.growl.warning({ message: 'Please update the loading times' });
             }
 
 

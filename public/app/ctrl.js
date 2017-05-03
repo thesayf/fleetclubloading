@@ -1,6 +1,5 @@
 
 
-
 // Ctrl For Dash
 app.controller('HomeCtrl', function($scope, $localStorage, $location) {
     $localStorage.vg = {};
@@ -599,7 +598,7 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
             }
         }
         /*if($scope.totalCuft >= 600) {
-            $.growl.error({message: 'Please call us for moves with 600 cubic feet or over!'})
+            toastr.error({message: 'Please call us for moves with 600 cubic feet or over!'})
         } else {
           $('.growl').remove();
         }*/
@@ -621,42 +620,42 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
 
             // IF THERES NO INVENTORY FLAG
             /*if($scope.dashInstant.itemBoxes[0].qty < 1 && $scope.dashInstant.itemBoxes[1].qty < 1 && $scope.dashInstant.itemBoxes[2].qty < 1) {
-                $.growl.error({ message: 'Fill in the Inventory!' });
+                toastr.error({ message: 'Fill in the Inventory!' });
             }*/
 
             if($scope.dashInstant.vanType == undefined || $scope.dashInstant.vanType == '') {
-                $.growl.warning({ message: 'Choose a van!' });
+                toastr.warning( 'Choose a van!' );
             }
 
             if($scope.dashInstant.jobStartTimeHour == undefined || $scope.dashInstant.jobStartTimeMin  == undefined) {
-              $.growl.warning({ message: 'Choose a start time!' });
+              toastr.warning( 'Choose a start time!' );
             }
 
 
             // IF NO ADDRESS DATA
             if($scope.dashInstant.address == undefined) {
-                $.growl.warning({message: 'Fill in the Start & End Location!'});
+                toastr.warning('Fill in the Start & End Location!');
             } else {
                 var add = $scope.dashInstant.address;
                 var dropObj = $scope.dashInstant.extraDropObj;
                 if(add.start_location !== undefined) {
                     if(add.start_location.name !== undefined) {
                         if(add.start_location.name.length < 3) {
-                            $.growl.warning({ message: 'Fill in the Start Location!' });
+                            toastr.warning( 'Fill in the Start Location!' );
                         }
 
                     } else {
-                        $.growl.warning({ message: 'Fill in the Start Location!' });
+                        toastr.warning( 'Fill in the Start Location!' );
                     }
                     if(add.start_location.number !== undefined) {
                         if(add.start_location.number.length < 1) {
-                            $.growl.warning({ message: 'Fill in the Start Location House Number!' });
+                            toastr.warning( 'Fill in the Start Location House Number!' );
                         }
                     } else {
-                        $.growl.warning({ message: 'Fill in the Start Location House Number!' });
+                        toastr.warning( 'Fill in the Start Location House Number!' );
                     }
                 } else {
-                    $.growl.warning({ message: 'Fill in the Start Location!' });
+                    toastr.warning( 'Fill in the Start Location!' );
                 }
 
                 // LOOP DROP POINTS
@@ -664,33 +663,33 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
                     if(Object.keys(dropObj).length > 0) {
                       for(i in dropObj) {
                         if(dropObj[i].postcode.formatted_address == undefined || dropObj[i].postcode.formatted_address.length < 1) {
-                          $.growl.warning({ message: 'Fill in all your drop off postcodes' });
+                          toastr.warning( 'Fill in all your drop off postcodes' );
                         }
                         if(dropObj[i].doorNumber == undefined || dropObj[i].doorNumber.length < 1) {
-                          $.growl.warning({ message: 'Fill in all your drop off door numbers' });
+                          toastr.warning( 'Fill in all your drop off door numbers' );
                         }
                       }
                     }
                 } else {
-                    $.growl.warning({ message: 'Fill in the Drop Off Locations!' });
+                    toastr.warning( 'Fill in the Drop Off Locations!' );
                 }
 
                 if(add.start_location.name.formatted_address == undefined) {
                   //console.log(add);
-                  $.growl.warning({ message: 'Use the location suggestion drop down box to pick your address' });
+                  toastr.warning( 'Use the location suggestion drop down box to pick your address' );
                 }
                 if(add.start_location.name.formatted_address == undefined) {
-                  $.growl.warning({ message: 'Use the location suggestion drop down box to pick your address' });
+                  toastr.warning( 'Use the location suggestion drop down box to pick your address' );
                 }
             }
 
 
             // IF NO JOB DATE
             if($scope.dashInstant.jobDate == undefined || $scope.dashInstant.jobDate == '') {
-                $.growl.warning({ message: 'Fill in the Job Date!' });
+                toastr.warning( 'Fill in the Job Date!' );
             }
             if($scope.dashInstant.jobStartTime == undefined || $scope.dashInstant.jobStartTime == '') {
-                $.growl.warning({ message: 'Fill in the Start Time!' });
+                toastr.warning( 'Fill in the Start Time!' );
             } else {
                 var realTime = new Date();
                 var h = realTime.getHours();
@@ -703,7 +702,7 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
 
                 var utcNowDate = month+'-'+day+'-'+year;
 
-                if($scope.dashInstant.jobDate !== undefined || $scope.dashInstant.jobDate !== '') {
+                if($scope.dashInstant.jobDate !== undefined && $scope.dashInstant.jobDate !== '') {
                   var splitChooseDate = $scope.dashInstant.jobDate.split();
                   //console.log('split: '+$scope.dashInstant.jobDate);
                   var utcJobDate = splitChooseDate[1]+'-'+splitChooseDate[0]+'-'+splitChooseDate[2];
@@ -716,7 +715,7 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
                     var d1 = Date.parse(utcNowDate);
                     var d2 = Date.parse(utcJobDate);
                     if (d1 < d2) {
-                        $.growl.warning({ message: 'The Start Time has already passed!' });
+                        toastr.warning( 'The Start Time has already passed!' );
                     } else {
                         // Cool
                     }
@@ -726,7 +725,7 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
 
             // if no load time
             if($scope.loadBtnValid !== true) {
-              $.growl.warning({ message: 'Please update the loading times' });
+              toastr.warning( 'Please update the loading times' );
             }
 
 
@@ -1095,7 +1094,7 @@ app.controller('DashInstantCtrl', function($scope, maps, $localStorage, items, r
 
         if($scope.totalCuft >= 600) {
           $('.cubic-error').removeClass('hide');
-          //$.growl.error({message: 'Please call us for moves with 600 cubic feet or over!'})
+          //toastr.error({message: 'Please call us for moves with 600 cubic feet or over!'})
         } else {
           //$('.growl').remove();
           $('.cubic-error').addClass('hide');
@@ -1139,7 +1138,7 @@ app.controller('NaviCtrl', function($scope, views, $route, auth, $http, user, in
                 },5000,0);
             } else {
                 $scope.isEmailSent = false;
-                toastr.error(response.message);
+                toastr.info(response.message);
             }
         });
         //console.log("test to see if email")
@@ -1177,7 +1176,7 @@ app.controller('CheckoutCtrl', function($scope, $location, $localStorage, $http,
 
     $scope.vali = function(name, length, msg, cb) {
         if(name == '' || name == undefined || name.length < 3) {
-            $.growl.warning({ message: msg });
+            toastr.warning( msg );
             cb(1);
         } else {
             cb(0);
@@ -1219,7 +1218,7 @@ app.controller('CheckoutCtrl', function($scope, $location, $localStorage, $http,
         $localStorage.vg.jobDetails = $scope.jobDeets;
         $location.path("/checkout-3")
       } else {
-        $.growl.warning({ message: 'Please agree to the terms.' });
+        toastr.warning( 'Please agree to the terms.' );
       }
 
     }
@@ -1247,23 +1246,23 @@ app.controller('CheckoutCtrl', function($scope, $location, $localStorage, $http,
 
           var flag = 0;
           if($scope.ccDeets.number == undefined || $scope.ccDeets.number.replace(/ /g,'').length !== 16) {
-              $.growl.warning({ message: 'Card Number Must Be 16 Digits!'});
+              toastr.warning( 'Card Number Must Be 16 Digits!');
               flag = flag + 1;
           }
           if($scope.ccDeets.expMonth == undefined || $scope.ccDeets.expMonth.length !== 2) {
-              $.growl.warning({ message: 'Card Expiration Month Must Be 2 Digits!'});
+              toastr.warning( 'Card Expiration Month Must Be 2 Digits!');
               flag = flag + 1;
           }
           if($scope.ccDeets.expYear == undefined || $scope.ccDeets.expYear.length !== 2) {
-              $.growl.warning({ message: 'Card Expiration Year Must Be 2 Digits!'});
+              toastr.warning( 'Card Expiration Year Must Be 2 Digits!');
               flag = flag + 1;
           }
           if($scope.ccDeets.expCvc == undefined || $scope.ccDeets.expCvc.length !== 3) {
-              $.growl.warning({ message: 'Card CVC Number Must Be 3 Digits!'});
+              toastr.warning( 'Card CVC Number Must Be 3 Digits!');
               flag = flag + 1;
           }
           if($scope.ccDeets.zip == undefined || $scope.ccDeets.zip.length < 4) {
-              $.growl.warning({ message: 'Please add a billing post code!'});
+              toastr.warning( 'Please add a billing post code!');
               flag = flag + 1;
           }
 
@@ -1279,7 +1278,7 @@ app.controller('CheckoutCtrl', function($scope, $location, $localStorage, $http,
                 $localStorage.vg.jobDetails
                 $http.post("/api/charge-card", {stripe: res, user: $localStorage.vg.jobDetails}).then(function(status){
                     if(status.data.status !== false) {
-                        //$.growl.notice({message: status.data.message});
+                        //toastr.notice({message: status.data.message});
                         $scope.jobDeets.paymentID = status.data.data.id;
                         $localStorage.vg.jobDetails.paymentID = $scope.jobDeets.paymentID;
                         $http.post('/api/book-job', {data: $localStorage.vg.jobDetails}).then(function(resp) {
@@ -1309,7 +1308,7 @@ app.controller('CheckoutCtrl', function($scope, $location, $localStorage, $http,
                                     ]*/
                                 });
                             } else {
-                                $.growl.warning({message: 'Job Booking Failed Please Call Us!'});
+                                toastr.warning('Job Booking Failed Please Call Us!');
                                 $form.find('.submit').prop('disabled', false);
                                 $('.spinner').remove();
                                 //$localStorage.vg = {};
@@ -1318,7 +1317,7 @@ app.controller('CheckoutCtrl', function($scope, $location, $localStorage, $http,
                             }
                         })
                     } else {
-                        $.growl.warning({message: 'Payment Failed, Try a different card!'});
+                        toastr.warning('Payment Failed, Try a different card!');
                         $form.find('.submit').prop('disabled', false);
                         $('.spinner').remove();
                         $location.path('/404-page');
